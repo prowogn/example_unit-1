@@ -26,8 +26,8 @@ jobs:
       run: msbuild UnitTestProjects.sln /p:Configuration=Debug /p:Platform=x64
 
     - name: Run C++ tests with VSTest
-      # Run the test assembly produced by the build
-      run: vstest.console.exe "UnitTestProjects/x64/Debug/UnitTestProjects.exe" /Platform:x64 /Logger:trx
+      # Run the test assembly produced by the build (correct path in CI environment)
+      run: vstest.console.exe ".\\x64\\Debug\\UnitTestProjects.exe" /Platform:x64 /Logger:trx
       # The VSTest action marketplace has some issues/deprecations, so manual execution is safer
       shell: cmd
     - name: Upload test results artifact (optional)
