@@ -22,17 +22,16 @@ jobs:
         arch: x64
 
     - name: Build Solution
-      # Use MSBuild to compile the entire solution, including the test projects
+      # Use MSBuild to compile the solution including the test project
       run: msbuild UnitTestProjects.sln /p:Configuration=Debug /p:Platform=x64
 
     - name: Run C++ tests with VSTest
-      # Use the path found in the previous step
-      run:  vstest.console.exe x64/debug/TEST.dll /Platform:x64 /Logger:trx
+      # Run the test assembly produced by the build
+      run: vstest.console.exe "UnitTestProjects/x64/Debug/UnitTestProjects.exe" /Platform:x64 /Logger:trx
       # The VSTest action marketplace has some issues/deprecations, so manual execution is safer
       shell: cmd
-      
     - name: Upload test results artifact (optional)
       uses: actions/upload-artifact@v4
       with:
         name: test-results
-        path: 'tests/latest.trx' # Upload the .trx results file
+        path: '**/*.trx' # Upload the .trx results file
